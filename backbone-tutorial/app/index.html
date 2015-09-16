@@ -40,7 +40,8 @@
 </head>
 
 <body>
-  <script id="layout-nav-view-template" type="text/template">
+  <div id="container-navbar"></div>
+  <script id="region-navbar-header-template" type="text/template">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
       aria-expanded="false" aria-controls="navbar">
@@ -51,7 +52,7 @@
       </button>
       <a class="navbar-brand" href="#">Project name</a>
   </script>
-  <script id="layout-nav-view-template" type="text/template">
+  <script id="region-navbar-template" type="text/template">
     <form class="navbar-form navbar-right">
       <div class="form-group">
         <input type="text" placeholder="Email" class="form-control">
@@ -62,14 +63,17 @@
       <button type="submit" class="btn btn-success">Sign in</button>
     </form>
   </script>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-    </div>
-    <!--/.navbar-collapse -->
-    </div>
-  </nav>
+
+  <script id="layout-nav-view-template" type="text/template">
+    <nav id="container-navbar" class="navbar navbar-inverse navbar-fixed-top">
+      <div id="region-navbar-header" class="container">
+      </div>
+      <div id="region-navbar" class="navbar-collapse collapse">
+      </div>
+      <!--/.navbar-collapse -->
+      </div>
+    </nav>
+  </script>
 
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron">

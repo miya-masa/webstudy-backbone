@@ -19,9 +19,20 @@
 'use strict';
 
 var Backbone = require('backbone');
+var Marionette = require('backbone.marionette');
 Backbone.$ = require('jquery');
 var NavLayoutView = require('./views/navLayoutView');
-var navLayoutView = new NavLayoutView();
-navLayoutView.render();
+var NavbarHeaderView = require('./views/navbarHeaderView');
 
-console.log('Hello World');
+var App = Marionette.Application.extend({});
+
+var app = new App();
+app.on('start', function() {
+  var navLayoutView = new NavLayoutView({
+    el: '#container-navbar'
+  });
+  navLayoutView.render();
+  navLayoutView.showChildView('regionNavbarHeader', new NavbarHeaderView());
+  console.log('Hello World');
+});
+app.start();
