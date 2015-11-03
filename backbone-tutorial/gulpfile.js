@@ -21,6 +21,8 @@
 
 // Include Gulp & tools we'll use
 var gulp = require('gulp');
+var path = require('path');
+var merge = require('merge-stream');
 var $ = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
@@ -43,14 +45,65 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 
-gulp.task('bundle', function() {
+var bundle = function(folder) {
+  var mainJs = './app/scripts/' + folder + '/main.js';
+  var bundleSource = './' + folder + '/bundle.js';
+  var sourcemapDest = './.tmp/scripts/';
   // set up the browserify instance on a task basis
   var b = browserify({
-    entries: './app/scripts/main.js',
+    entries: mainJs,
     debug: true
   });
+  return b.bundle()
+    .pipe(source(bundleSource))
+    .pipe(buffer())
+    .pipe($.sourcemaps.init({
+      loadMaps: true
+    }))
+    // Add transformation tasks to the pipeline here.
+    .pipe($.sourcemaps.write('./'))
+    .on('error', $.util.log)
+    .pipe(gulp.dest('./.tmp/scripts/'));
+};
 
 
+var tutorialNm = ['01', '02', '03'];
+tutorialNm.forEach(function(e) {
+  var subTaskName = 'tutorial' + e;
+  console.log('Define Task tutorialNm = %s', e);
+  gulp.task('bundle:' + subTaskName, function() {
+    // サブタスク名をそのままフォルダ名とする
+    return bundle(subTaskName);
+  });
+  // Watch files for changes & reload
+  gulp.task('serve:' + subTaskName, ['styles'], function() {
+    browserSync({
+      notify: false,
+      // Customize the BrowserSync console logging prefix
+      logPrefix: 'WSK',
+      // Run as an https by uncommenting 'https: true'
+      // Note: this uses an unsigned certificate which on first access
+      //       will present a certificate warning in the browser.
+      // https: true,
+      server: ['.tmp', 'app']
+    });
+
+    gulp.watch(['app/**/*.html'], reload);
+    gulp.watch(['app/**/*.hbs'], reload);
+    gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
+    gulp.watch(['app/scripts/**/*.js'], ['bundle:' + subTaskName, 'jshint', reload]);
+    gulp.watch(['app/images/**/*'], reload);
+  });
+});
+
+
+gulp.task('bundle', function() {
+  var mainJs = './app/scripts/main.js';
+  // set up the browserify instance on a task basis
+  var b = browserify({
+    entries: mainJs,
+    debug: true
+  });
   return b.bundle()
     .pipe(source('./bundle.js'))
     .pipe(buffer())
@@ -182,24 +235,6 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist/*', '!dist/.git'], {
   dot: true
 }));
 
-// Watch files for changes & reload
-gulp.task('serve', ['styles'], function() {
-  browserSync({
-    notify: false,
-    // Customize the BrowserSync console logging prefix
-    logPrefix: 'WSK',
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
-    server: ['.tmp', 'app']
-  });
-
-  gulp.watch(['app/**/*.html'], reload);
-  gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['bundle', 'jshint', reload]);
-  gulp.watch(['app/images/**/*'], reload);
-});
 
 // Build and serve the output from the dist build
 gulp.task('serve:dist', ['default'], function() {
