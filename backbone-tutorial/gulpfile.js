@@ -55,6 +55,7 @@ var bundle = function(folder) {
     debug: true
   });
   return b.bundle()
+    .pipe($.plumber())
     .pipe(source(bundleSource))
     .pipe(buffer())
     .pipe($.sourcemaps.init({
@@ -70,8 +71,9 @@ var bundle = function(folder) {
 var tutorialNm = ['01', '02', '03'];
 tutorialNm.forEach(function(e) {
   var subTaskName = 'tutorial' + e;
+  var bundleTaskName = 'bundle:' + subTaskName;
   console.log('Define Task tutorialNm = %s', e);
-  gulp.task('bundle:' + subTaskName, function() {
+  gulp.task(bundleTaskName, function() {
     // サブタスク名をそのままフォルダ名とする
     return bundle(subTaskName);
   });
@@ -89,9 +91,9 @@ tutorialNm.forEach(function(e) {
     });
 
     gulp.watch(['app/**/*.html'], reload);
-    gulp.watch(['app/**/*.hbs'], reload);
+    gulp.watch(['app/**/*.hbs'], [bundleTaskName, reload], reload);
     gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-    gulp.watch(['app/scripts/**/*.js'], ['bundle:' + subTaskName, 'jshint', reload]);
+    gulp.watch(['app/scripts/**/*.js'], [bundleTaskName, 'jshint', reload]);
     gulp.watch(['app/images/**/*'], reload);
   });
 });
@@ -119,14 +121,16 @@ gulp.task('bundle', function() {
 // Lint JavaScript
 gulp.task('jshint', function() {
   return gulp.src('app/scripts/**/*.js')
+    .pipe($.plumber())
     .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'))
-    .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+    .pipe($.jshint.reporter('jshint-stylish'));
+    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
 // Optimize images
 gulp.task('images', function() {
   return gulp.src('app/images/**/*')
+    .pipe($.plumber())
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true
@@ -154,6 +158,7 @@ gulp.task('copy', function() {
 // Copy web fonts to dist
 gulp.task('fonts', function() {
   return gulp.src(['app/fonts/**'])
+    .pipe($.plumber())
     .pipe(gulp.dest('dist/fonts'))
     .pipe($.size({
       title: 'fonts'
@@ -167,6 +172,7 @@ gulp.task('styles', function() {
       'node_modules/bootstrap/dist/css/**/*.min.css',
       'app/styles/**/*.css'
     ])
+    .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.changed('.tmp/styles', {
       extension: '.css'
@@ -195,6 +201,7 @@ gulp.task('html', function() {
   });
 
   return gulp.src('app/**/*.html')
+    .pipe($.plumber())
     .pipe(assets)
     // Concatenate and minify JavaScript
     .pipe($.if('*.js', $.uglify({

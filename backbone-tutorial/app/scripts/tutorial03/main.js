@@ -3,16 +3,18 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 Backbone.$ = require('jquery');
 var MainContentsView = require('./views/mainContentsView');
-//var Handlebars = require('handlebars');
-//Marionette.TemplateCache.prototype.compileTemplate = function() {
-//  return Handlebars.compile(arguments);
-//};
+var MainContentsModel = require('./models/mainContentsModel');
 
 var app = new Marionette.Application();
 app.on('start', function() {
   console.log('Hello World!!!!!!!');
+  var mainContentsModel = new MainContentsModel({
+    name : 'Miya',
+    greeting : 'こんにちは'
+  });
   var myContentsView = new MainContentsView({
-    el: '#main-contents'
+    el: '#main-contents',
+    model: mainContentsModel
   });
   myContentsView.render();
 });
