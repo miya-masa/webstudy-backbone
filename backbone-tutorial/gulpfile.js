@@ -30,6 +30,7 @@ var browserSync = require('browser-sync');
 var pagespeed = require('psi');
 var reload = browserSync.reload;
 
+var TUTORIAL_NM = ['01', '02', '03', '04'];
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
@@ -42,43 +43,53 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 var browserify = require('browserify');
+var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var _ = require('underscore');
 
 var bundle = function(folder) {
   var mainJs = './app/scripts/' + folder + '/main.js';
   var bundleSource = './' + folder + '/bundle.js';
   var sourcemapDest = './.tmp/scripts/';
   // set up the browserify instance on a task basis
-  var b = browserify({
-    entries: mainJs,
+  var b = watchify(browserify(_.extend({}, watchify.args, {
+    entries: [mainJs],
     debug: true
-  });
-  return b.bundle()
-    .pipe($.plumber())
-    .pipe(source(bundleSource))
-    .pipe(buffer())
-    .pipe($.sourcemaps.init({
-      loadMaps: true
-    }))
-    // Add transformation tasks to the pipeline here.
-    .pipe($.sourcemaps.write('./'))
-    .on('error', $.util.log)
-    .pipe(gulp.dest('./.tmp/scripts/'));
+  })));
+  var reBundle = function() {
+    return b.bundle()
+      .pipe(source(bundleSource))
+      .pipe(buffer())
+      .pipe($.sourcemaps.init({
+        loadMaps: true
+      }))
+      // Add transformation tasks to the pipeline here.
+      .pipe($.sourcemaps.write('./'))
+      .on('error', function(err) {
+        $.util.log(err);
+      })
+      .pipe(gulp.dest('./.tmp/scripts/'))
+      .pipe(reload({
+        stream: true,
+        once: true
+      }));
+  };
+  b.on('update', reBundle);
+  return reBundle();
 };
 
 
-var tutorialNm = ['01', '02', '03'];
-tutorialNm.forEach(function(e) {
+TUTORIAL_NM.forEach(function(e) {
   var subTaskName = 'tutorial' + e;
   var bundleTaskName = 'bundle:' + subTaskName;
-  console.log('Define Task tutorialNm = %s', e);
+  console.log('Define Task TUTORIAL_NM = %s taskName = %s', e, bundleTaskName);
   gulp.task(bundleTaskName, function() {
     // サブタスク名をそのままフォルダ名とする
     return bundle(subTaskName);
   });
   // Watch files for changes & reload
-  gulp.task('serve:' + subTaskName, ['styles'], function() {
+  gulp.task('serve:' + subTaskName, ['styles', bundleTaskName], function() {
     browserSync({
       notify: false,
       // Customize the BrowserSync console logging prefix
@@ -91,31 +102,11 @@ tutorialNm.forEach(function(e) {
     });
 
     gulp.watch(['app/**/*.html'], reload);
-    gulp.watch(['app/**/*.hbs'], [bundleTaskName, reload], reload);
+    gulp.watch(['app/**/*.hbs'], reload);
     gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-    gulp.watch(['app/scripts/**/*.js'], [bundleTaskName, 'jshint', reload]);
+    gulp.watch(['app/scripts/**/*.js'], ['jshint']);
     gulp.watch(['app/images/**/*'], reload);
   });
-});
-
-
-gulp.task('bundle', function() {
-  var mainJs = './app/scripts/main.js';
-  // set up the browserify instance on a task basis
-  var b = browserify({
-    entries: mainJs,
-    debug: true
-  });
-  return b.bundle()
-    .pipe(source('./bundle.js'))
-    .pipe(buffer())
-    .pipe($.sourcemaps.init({
-      loadMaps: true
-    }))
-    // Add transformation tasks to the pipeline here.
-    .pipe($.sourcemaps.write('./'))
-    .on('error', $.util.log)
-    .pipe(gulp.dest('./.tmp/scripts/'));
 });
 
 // Lint JavaScript
@@ -123,8 +114,8 @@ gulp.task('jshint', function() {
   return gulp.src('app/scripts/**/*.js')
     .pipe($.plumber())
     .pipe($.jshint())
-    .pipe($.jshint.reporter('jshint-stylish'));
-    // .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
+    .pipe($.jshint.reporter('jshint-stylish'))
+    .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
 // Optimize images
