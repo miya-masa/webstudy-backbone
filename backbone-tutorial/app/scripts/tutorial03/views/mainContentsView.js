@@ -3,39 +3,10 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 Backbone.$ = require('jquery');
 var mainContentsTemplate = require('../templates/mainContentsTemplate.hbs');
+// !!Try!! ボタンを押下したらフォームの値をViewに反映する
+// !!Try!! View内のUIを定義する
+// !!Try!! イベントリスナを定義する(UIイベント、モデルイベント)
 var MainContentsView = Marionette.ItemView.extend({
-  template: mainContentsTemplate,
-
-  ui: {
-    buttonApply: '#apply',
-    textName: '#name',
-    textGreeting: '#greeting'
-  },
-
-
-  events: {
-    'click @ui.buttonApply': 'onClickButtonApply'
-  },
-
-  modelEvents: {
-    'change': 'render'
-  },
-
-  onRender: function() {
-    console.log('onRender');
-    this.ui.textGreeting.focus();
-  },
-
-  onClickButtonApply: function() {
-    console.log('start onClickButtonApply');
-    var name = this.ui.textName.val();
-    var greeting = this.ui.textGreeting.val();
-    console.log('name:%s', name);
-    console.log('greeting:%s', greeting);
-    this.model.set({
-      name: name,
-      greeting: greeting
-    });
-  }
+  template: mainContentsTemplate
 });
 module.exports = MainContentsView;

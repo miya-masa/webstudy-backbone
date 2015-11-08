@@ -3,18 +3,14 @@ var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 Backbone.$ = require('jquery');
 var MainContentsView = require('./views/mainContentsView');
-var MainContentsModel = require('./models/mainContentsModel');
+// !!Try!! モデルを読み込む
 
 var app = new Marionette.Application();
 app.on('start', function() {
-  console.log('Hello World!!!!!!!');
-  var mainContentsModel = new MainContentsModel({
-    name : 'Miya',
-    greeting : 'こんにちは'
-  });
+  // !!Try!! モデルからインスタンスを生成する
+  // !!Try!! 生成したモデルオブジェクトをビューと関連付ける。
   var myContentsView = new MainContentsView({
     el: '#main-contents',
-    model: mainContentsModel
   });
   myContentsView.render();
 });

@@ -1,8 +1,7 @@
+'use strict';
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 Backbone.$ = require('jquery');
-var mainContentsTemplate = require('../templates/mainContentsTemplate.hbs');
-var MainContentsView = Marionette.ItemView.extend({
-  template: mainContentsTemplate
-});
-module.exports = MainContentsView;
+// !!Try!! テンプレートの読み込み
+// !!Try!! テンプレートを利用してViewを定義する
+// !!Try!! 作ったモジュールを公開する

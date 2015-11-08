@@ -1,0 +1,14 @@
+{
+  "01": {
+    "name": "Miya",
+    "greeting": "こんにちは"
+  },
+  "02": {
+    "name": "Taro",
+    "greeting": "こんばんは"
+  },
+  "03": {
+    "name": "Jiro",
+    "greeting": "おはようございます"
+  }
+}

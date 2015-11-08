@@ -6,8 +6,7 @@ var MainContentsRouter = require('./router/mainContentsRouter');
 
 var app = new Marionette.Application();
 app.on('start', function() {
-  console.log('Hello World!!!!!!!');
-  new MainContentsRouter();
+  // !!Try!! Routerを初期化する
   Backbone.history.start();
 });
 app.start();
