@@ -30,7 +30,7 @@ var browserSync = require('browser-sync');
 var pagespeed = require('psi');
 var reload = browserSync.reload;
 
-var TUTORIAL_NM = ['01', '02', '03', '04', '05', '06'];
+var TUTORIAL_NM = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
