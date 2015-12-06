@@ -1,25 +1,31 @@
 'use strict';
 var _ = require('underscore');
 var Backbone = require('backbone');
-var Marionette = require('backbone.marionette');
 Backbone.$ = require('jquery');
+var Marionette = require('backbone.marionette');
 var userData = require('../data/userData.json');
 var mainContentsCompositeTemplate = require('../templates/mainContentsCompositeTemplate.hbs');
 var MainContentsCompositeChildView = require('../views/MainContentsCompositeChildView');
-// !!Try!! ComositeViewを定義する
-// childView属性を指定する(クラスを指定)
-// childViewContainerとなるセレクターを指定する'.child-container'
-// 子ビューのeventsをリスンする(childEvents)。remode:rowイベントをフックするように指定する
-// イベントハンドラは'onChildRemoveRow'
+
 var MainContentsCompositeView = Marionette.CompositeView.extend({
-  template : mainContentsCompositeTemplate,
-  //start
-  //end
-  events: {
-    'click @ui.btnReset': 'onClickBtnReset'
+  template: mainContentsCompositeTemplate,
+  childView: MainContentsCompositeChildView,
+  childViewContainer: '.child-container',
+  childEvents: {
+    'remove:row': 'onChildRemoveRow'
   },
-  onChildRemoveRow: function(childView, id) {
-    this.collection.remove(id);
+  ui: {
+    'btnReset': '.btn-reset',
+    'btnSave': '.btn-save'
+  },
+  events: {
+    'click @ui.btnReset': 'onClickBtnReset',
+    'click @ui.btnSave': 'onClickBtnSave'
+  },
+  onChildRemoveRow: function(childView) {
+    var childModel = childView.model;
+    this.collection.remove(childModel.get('id'));
+    childModel.destroy();
   },
   onClickBtnReset: function() {
     this.collection.reset();
@@ -28,9 +34,13 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
       models.push(e);
     });
     this.collection.add(models);
+  },
+  onClickBtnSave: function() {
+    this.collection.each(function(e) {
+      e.save();
+    });
   }
 
 });
 
 module.exports = MainContentsCompositeView;
-

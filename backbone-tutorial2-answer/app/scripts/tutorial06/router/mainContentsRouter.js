@@ -9,6 +9,8 @@ var MainContentsCompositeView = require('../views/mainContentsCompositeView');
 var MainContentsModel = require('../models/mainContentsModel');
 var MainContentsCollection = require('../models/mainContentsCollection');
 
+// !!Try!! APPRouterを定義する
+// !!Try!! mainContents/:userIdで該当するユーザの情報を出力する
 var MainContentsRouter = Marionette.AppRouter.extend({
 
   routes: {
@@ -25,10 +27,14 @@ var MainContentsRouter = Marionette.AppRouter.extend({
   },
   showAll: function() {
     // 全ユーザ表示
-    // !!Try!! コレクションを生成 userDataを詰め込む => _.chain()を利用してみる
-    // !!Try!! CompositeViewインスタンスを生成し、elは#main-contents、collectionに生成したcollectionをセットする
-    // レンダリングする(render)
+    var mainContentsCollection = new MainContentsCollection();
+    mainContentsCollection.fetch().done(function() {
+      var mainContentsCompositeView = new MainContentsCompositeView({
+        el: '#main-contents',
+        collection: mainContentsCollection
+      });
+      mainContentsCompositeView.render();
+    });
   }
 });
 module.exports = MainContentsRouter;
-
