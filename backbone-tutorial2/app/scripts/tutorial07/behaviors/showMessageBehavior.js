@@ -16,3 +16,4 @@ var ShowMessageBehavior = Marionette.Behavior.extend({
 
 });
 module.exports = ShowMessageBehavior;
+

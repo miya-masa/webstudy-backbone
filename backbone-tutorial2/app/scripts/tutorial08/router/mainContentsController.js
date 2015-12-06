@@ -9,6 +9,9 @@ var MainContentsCompositeView = require('../views/mainContentsCompositeView');
 var MainContentsModel = require('../models/mainContentsModel');
 var MainContentsCollection = require('../models/mainContentsCollection');
 var MainContentsLayoutView = require('../views/mainContentsLayoutView');
+var HeaderView = require('../views/parts/HeaderView');
+var ContentView = require('../views/parts/ContentView');
+var FooterView = require('../views/parts/FooterView');
 
 var mainContentsController = {
   showUser: function(id) {
@@ -25,8 +28,10 @@ var mainContentsController = {
       el: '#main-contents'
     });
     mainContentsLayoutView.render();
+    mainContentsLayoutView.showChildView('header', new HeaderView());
+    mainContentsLayoutView.showChildView('content', new ContentView());
+    mainContentsLayoutView.showChildView('footer', new FooterView());
   },
-
   showAll: function() {
     // 全ユーザ表示
     var mainContentsCollection = new MainContentsCollection();
@@ -40,3 +45,4 @@ var mainContentsController = {
   }
 };
 module.exports = mainContentsController;
+
