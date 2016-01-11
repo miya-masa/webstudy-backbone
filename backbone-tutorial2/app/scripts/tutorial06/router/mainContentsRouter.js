@@ -9,8 +9,6 @@ var MainContentsCompositeView = require('../views/mainContentsCompositeView');
 var MainContentsModel = require('../models/mainContentsModel');
 var MainContentsCollection = require('../models/mainContentsCollection');
 
-// !!Try!! APPRouterを定義する
-// !!Try!! mainContents/:userIdで該当するユーザの情報を出力する
 var MainContentsRouter = Marionette.AppRouter.extend({
 
   routes: {

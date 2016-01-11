@@ -5,13 +5,8 @@ Backbone.$ = require('jquery');
 var Marionette = require('backbone.marionette');
 
 var ShowMessageBehavior = Marionette.Behavior.extend({
-
-  ui: {
-    'message': '.message'
-  },
-
+  // 実装する
   onShowMessage: function(message) {
-    this.ui.message.text(message);
   },
 
 });

@@ -23,10 +23,9 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
     'click @ui.btnReset': 'onClickBtnReset',
     'click @ui.btnSave': 'onClickBtnSave'
   },
+
   behaviors: {
-    ShowMessageBehavior: {
-      behaviorClass: ShowMessageBehavior
-    }
+    // 実装する
   },
 
   onChildRemoveRow: function(childView) {
@@ -34,7 +33,7 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
     this.collection.remove(childModel.get('id'));
     var self = this;
     childModel.destroy().done(function() {
-      self.triggerMethod('show:message', childModel.get('id') + 'を削除しました');
+      // 削除後
     });
   },
 
@@ -68,8 +67,7 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
       });
     });
     p.then(function() {
-      console.log(savedId);
-      self.triggerMethod('show:message', savedId.join(',') + 'を保存しました');
+      // 保存後
     });
     d.resolve();
   }

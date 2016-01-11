@@ -23,9 +23,7 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
     'click @ui.btnSave': 'onClickBtnSave'
   },
   onChildRemoveRow: function(childView) {
-    var childModel = childView.model;
-    this.collection.remove(childModel.get('id'));
-    childModel.destroy();
+    // 削除する
   },
   onClickBtnReset: function() {
     this.collection.reset();
@@ -36,11 +34,8 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
     this.collection.add(models);
   },
   onClickBtnSave: function() {
-    this.collection.each(function(e) {
-      e.save();
-    });
+    // すべて保存する
   }
-
 });
 
 module.exports = MainContentsCompositeView;
