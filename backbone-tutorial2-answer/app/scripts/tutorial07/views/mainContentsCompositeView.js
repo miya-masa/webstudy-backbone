@@ -24,7 +24,7 @@ var MainContentsCompositeView = Marionette.CompositeView.extend({
     'click @ui.btnSave': 'onClickBtnSave'
   },
   behaviors: {
-    ShowMessageBehavior: {
+    showMessageBehavior: {
       behaviorClass: ShowMessageBehavior
     }
   },
