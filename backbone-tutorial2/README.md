@@ -32,7 +32,7 @@ serveタスクはブラウザが自動的に立ち上げ、各チュートリア
 
 チュートリアルの概要ついては以下の通りです。
 
-1. tutorial01 ... BackboneJSでHello World
-1. tutorial02 ... テンプレート使ってみる
-1. tutorial03 ... Viewでイベントをリスンしてみる
-1. tutorial04 ... AppRouterを使ってみる
+1. tutorial05 ... CompositeViewとCollection
+1. tutorial06 ... Rest通信
+1. tutorial07 ... View処理の共通化
+1. tutorial08 ... Viewのレイアウト化
