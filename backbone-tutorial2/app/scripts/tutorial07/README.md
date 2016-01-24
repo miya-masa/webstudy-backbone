@@ -1,4 +1,4 @@
-1. .messageにメッセージを表示するshowMessageBehaviorを定義する
+1. .messageにメッセージを表示するShowMessageBehaviorを定義する
  + uiに.messageを指定する
  + ui.messageにメッセージを表示するonShowMessageを実装する
 1. mainContentsCompositeViewにbehaviorsを設定する

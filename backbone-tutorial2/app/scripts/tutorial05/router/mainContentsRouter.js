@@ -25,7 +25,7 @@ var MainContentsRouter = Marionette.AppRouter.extend({
   },
   showAll: function() {
     // 全ユーザ表示
-    // !!Try!! コレクションを生成 userDataを詰め込む => _.chain()を利用してみる
+    // !!Try!! コレクションを生成 userDataを詰め込む => _を利用してみる
     // !!Try!! CompositeViewインスタンスを生成し、elは#main-contents、collectionに生成したcollectionをセットする
     // レンダリングする(render)
   }

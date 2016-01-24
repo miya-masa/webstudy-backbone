@@ -12,7 +12,7 @@ var ShowMessageBehavior = Marionette.Behavior.extend({
 
   onShowMessage: function(message) {
     this.ui.message.text(message);
-  },
+  }
 
 });
 module.exports = ShowMessageBehavior;

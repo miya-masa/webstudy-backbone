@@ -8,9 +8,7 @@ var mainContentsLayoutTemplate = require('../templates/mainContentsLayoutTemplat
 var MainContentsLayoutView = Marionette.LayoutView.extend({
   template: mainContentsLayoutTemplate,
   regions: {
-    header: '#header',
-    content: '#content',
-    footer: '#footer'
+    /** regionsを定義する **/
   }
 });
 module.exports = MainContentsLayoutView;

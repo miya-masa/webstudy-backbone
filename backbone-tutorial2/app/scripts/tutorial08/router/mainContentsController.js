@@ -23,14 +23,7 @@ var mainContentsController = {
     myContentsView.render();
   },
   showLayout: function() {
-    console.log('showLayout');
-    var mainContentsLayoutView = new MainContentsLayoutView({
-      el: '#main-contents'
-    });
-    mainContentsLayoutView.render();
-    mainContentsLayoutView.showChildView('header', new HeaderView());
-    mainContentsLayoutView.showChildView('content', new ContentView());
-    mainContentsLayoutView.showChildView('footer', new FooterView());
+    //LayoutViewをレンダリングする
   },
   showAll: function() {
     // 全ユーザ表示

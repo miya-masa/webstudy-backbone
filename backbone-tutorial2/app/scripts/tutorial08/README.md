@@ -1,0 +1,2 @@
++ MainContentsLayoutViewでregionsを定義する。セレクターについてはmainContentsLayoutTemplateを参照する。
++ MainContentsControllerでLayoutViewを表示する

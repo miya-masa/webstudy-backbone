@@ -9,6 +9,7 @@ var MainContentsCompositeChildView = require('../views/MainContentsCompositeChil
 
 var MainContentsCompositeView = Marionette.CompositeView.extend({
   //ここから
+  //ここまでの間に記述する
   onChildRemoveRow: function(childView, id) {
     this.collection.remove(id);
   },
